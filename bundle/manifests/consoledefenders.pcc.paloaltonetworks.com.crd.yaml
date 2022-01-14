@@ -24,6 +24,10 @@ spec:
                     type: string
                   imagePullSecret:
                     type: string
+                  loadBalancerSourceRanges:
+                    type: array
+                    items:
+                      type: string
                   nodeLabels:
                     type: string
                   persistentVolumeLabels:
