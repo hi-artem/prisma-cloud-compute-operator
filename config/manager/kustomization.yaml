@@ -5,6 +5,6 @@ resources:
 - manager.yaml
 
 images:
-- digest: sha256:3906b9d7f1eafb94bcc95c7a2c035b3e0af6917993243344429ef6971d932bd5
+- digest: sha256:b8fcfbd6c51286c874e00db1bd35523386cec406fa4050ef44c0a887730cf9b8
   name: controller
-  newName: 274565299670.dkr.ecr.us-west-2.amazonaws.com/pcc-operator
+  newName: quay.io/prismacloud/pcc-operator
