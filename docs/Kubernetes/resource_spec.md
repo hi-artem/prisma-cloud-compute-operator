@@ -46,6 +46,9 @@ They are ultimately passed to `twistcli` for YAML generation.
   - **consoleConfig.imageName** (string)  
   Console image to deploy.
   If no value is specified, the image is pulled from the Prisma Cloud Compute registry.
+  - **consoleConfig.loadBalancerSourceRanges** (list)  
+  A list of CIDR ranges allowed to access Console service.
+  If not provided, Kubernetes allows traffic from 0.0.0.0/0.
   - **consoleConfig.nodeLabels** (string)  
   Label to use as a nodeSelector for Console.
   Specify a label and value (e.g. "kubernetes.io/hostname=node-name").

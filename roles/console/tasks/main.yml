@@ -28,6 +28,14 @@
   args:
     chdir: "{{ tools_dir.path }}"
 
+- name: Add load balancer source ranges to YAML file
+  lineinfile:
+    path: "{{ work_dir }}/twistlock_console.yaml"
+    insertbefore: "  type: {{ consoleConfig.serviceType }}"
+    line: |2-
+        loadBalancerSourceRanges: {{ consoleConfig.loadBalancerSourceRanges }}
+  when: consoleConfig.loadBalancerSourceRanges is defined and (consoleConfig.loadBalancerSourceRanges | length > 0)
+
 - name: Create Console from YAML file
   k8s:
     src: "{{ work_dir }}/twistlock_console.yaml"
