@@ -75,6 +75,38 @@
       "key": "{{ license }}"
     }
 
+- name: Download Console backup from S3
+  amazon.aws.aws_s3:
+    bucket: "{{ consoleConfig.restore.bucket }}"
+    object: "{{ consoleConfig.restore.object }}"
+    dest: "{{ work_dir }}/latest-21.08.525-0.tar.gz"
+    mode: get
+  when: consoleConfig.restore is defined
+
+- name: Upload backup to Console
+  uri:
+    url: https://twistlock-console.{{ namespace }}:8083/api/v1/backups/latest-21.08.525-0.tar.gz
+    validate_certs: false
+    method: POST
+    url_username: "{{ username }}"
+    url_password: "{{ password }}"
+    force_basic_auth: true
+    body_format: raw
+    src: "{{ work_dir }}/latest-21.08.525-0.tar.gz"
+    status_code: [200, 400]
+  when: consoleConfig.restore is defined
+
+- name: Restore Console from backup
+  uri:
+    url: https://twistlock-console.{{ namespace }}:8083/api/v1/backups/latest-21.08.525-0.tar.gz/restore
+    validate_certs: false
+    method: POST
+    url_username: "{{ username }}"
+    url_password: "{{ password }}"
+    force_basic_auth: true
+    status_code: [200, 400]
+  when: consoleConfig.restore is defined
+
 - name: Create Defender YAML file
   command: >
     linux/twistcli defender export {{ orchestrator }}
