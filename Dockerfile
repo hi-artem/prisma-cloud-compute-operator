@@ -23,6 +23,7 @@ LABEL name="Prisma Cloud Compute Operator" \
 COPY requirements.yml ${HOME}/requirements.yml
 RUN ansible-galaxy collection install -r ${HOME}/requirements.yml \
     && chmod -R ug+rwx ${HOME}/.ansible
+RUN pip install boto3
 
 # Required Licenses
 COPY licenses /licenses
