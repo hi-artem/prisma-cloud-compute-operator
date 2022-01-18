@@ -34,6 +34,13 @@ spec:
                     type: string
                   persistentVolumeStorage:
                     type: string
+                  restore:
+                    type: object
+                    properties:
+                      bucket:
+                        type: string
+                      object:
+                        type: string
                   runAsUser:
                     default: false
                     type: boolean
