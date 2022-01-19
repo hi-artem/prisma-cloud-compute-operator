@@ -12,6 +12,12 @@
     dest: "{{ tools_dir.path }}"
     remote_src: true
 
+- name: Set Console management port to 443
+  ansible.builtin.lineinfile:
+    path: "{{ tools_dir.path }}/twistlock.cfg"
+    regexp: '^MANAGEMENT_PORT_HTTPS=8083$'
+    line: "MANAGEMENT_PORT_HTTPS=443"
+
 - name: Create Console YAML file
   command: >
     linux/twistcli console export {{ orchestrator }}
@@ -42,7 +48,7 @@
 
 - name: Wait for Console to start up
   uri:
-    url: https://twistlock-console.{{ namespace }}:8083/api/v1/_ping
+    url: https://twistlock-console.{{ namespace }}:443/api/v1/_ping
     validate_certs: false
     method: GET
   register: result
@@ -52,7 +58,7 @@
 
 - name: Create first admin user
   uri:
-    url: https://twistlock-console.{{ namespace }}:8083/api/v1/signup
+    url: https://twistlock-console.{{ namespace }}:443/api/v1/signup
     validate_certs: false
     method: POST
     body_format: json
@@ -64,7 +70,7 @@
 
 - name: Add license to Console
   uri:
-    url: https://twistlock-console.{{ namespace }}:8083/api/v1/settings/license
+    url: https://twistlock-console.{{ namespace }}:443/api/v1/settings/license
     validate_certs: false
     url_username: "{{ username }}"
     url_password: "{{ password }}"
@@ -85,7 +91,7 @@
 
 - name: Upload backup to Console
   uri:
-    url: https://twistlock-console.{{ namespace }}:8083/api/v1/backups/latest-21.08.525-0.tar.gz
+    url: https://twistlock-console.{{ namespace }}:443/api/v1/backups/latest-21.08.525-0.tar.gz
     validate_certs: false
     method: POST
     url_username: "{{ username }}"
@@ -98,7 +104,7 @@
 
 - name: Restore Console from backup
   uri:
-    url: https://twistlock-console.{{ namespace }}:8083/api/v1/backups/latest-21.08.525-0.tar.gz/restore
+    url: https://twistlock-console.{{ namespace }}:443/api/v1/backups/latest-21.08.525-0.tar.gz/restore
     validate_certs: false
     method: POST
     url_username: "{{ username }}"
@@ -111,7 +117,7 @@
   command: >
     linux/twistcli defender export {{ orchestrator }}
     --user {{ username }}
-    --address https://twistlock-console.{{ namespace }}:8083
+    --address https://twistlock-console.{{ namespace }}:443
     --cluster-address twistlock-console
     {{ ('--cluster ' + defenderConfig.cluster) if defenderConfig.cluster is defined else '' }}
     {{ '--collect-pod-labels' if defenderConfig.collectPodLabels else '' }}

@@ -5,6 +5,6 @@ resources:
 - manager.yaml
 
 images:
-- digest: sha256:89fa57b530aae5b49dbc94e5064cf2c046a45d014989b5a8a057d1d177dced6d
+- digest: sha256:e963a1c2ec6964b673e8c698738adfff92fc78c2b911b10d98bcb0b4a0a42336
   name: controller
   newName: 274565299670.dkr.ecr.us-west-2.amazonaws.com/pcc-operator
